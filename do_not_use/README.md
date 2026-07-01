@@ -11,6 +11,7 @@ source paper up front. Reading the solutions short-circuits that.
 Contents:
 - `01_snrna_analysis_solution.ipynb` — Level 1 completed solution
 - `02_spatial_cell2location_solution.ipynb` — Level 2 completed solution
+- `03_xenium_organoid_analysis.ipynb` — Level 3 (Xenium) completed solution
 
 These are kept in the repository only for **instructors** (teaching, grading, reference). If you
 are a student and opened this by accident, close it and go back to your `*_student.ipynb`
