@@ -1,19 +1,20 @@
 # Setup guide — C10 (IFB Core cluster)
 
 > ## ⚡ Fast path
-> Once you can log in to the cluster (§1), get the materials with **git** and run the setup
-> script (on the **login node**):
+> First **fork** this repo on GitHub into your own account (§1b). Then, once you can log in to the
+> cluster (§1), clone **your fork** and run the setup script (on the **login node**):
 > ```bash
-> git clone git@github.com:arl94/gbm-space-c10.git ~/gbm-space-c10   # ← your instructor gives this URL
+> git clone git@github.com:<your-github-username>/gbm-space-c10.git ~/gbm-space-c10
 > cd ~/gbm-space-c10
+> git remote add upstream git@github.com:arl94/gbm-space-c10.git   # instructor's repo, for updates
 > bash setup.sh
 > ```
 > `setup.sh` enables conda, verifies the `single_cell` environment, and registers the Jupyter
 > kernel. Then open a **new terminal** and jump to §3 (VS Code). The sections below explain each
 > step manually. **Setup only — run heavy compute via Slurm (§5), not the login node.**
 >
-> **Getting updates later:** `git -C ~/gbm-space-c10 pull`. Keep your own work in *separate*
-> files (e.g. copy `01_..._student.ipynb` → `01_..._myname.ipynb`) so pulls don't clash.
+> **Get instructor updates later:** `git pull upstream master`. Do your analysis in a *copy* of the
+> student notebook (e.g. `01_..._student.ipynb` → `01_..._myname.ipynb`) so updates never clash with your edits.
 
 Everything for this project runs on the **IFB Core cluster**. You will:
 1. connect to the cluster,
@@ -49,24 +50,52 @@ jobs — **not** for heavy computation (see §5).
 
 ---
 
-## 1b. Get the materials with git
+## 1b. Get the materials with git (fork + upstream)
 
-The project lives in a GitHub repository your instructor will share with you. On the **login
-node**, clone it into your home directory:
+You'll keep your **own copy** of the repo on GitHub — a *fork* — so you can freely edit and
+complete the student notebooks, while still pulling in any updates the instructor makes to the
+originals. (A fork is the right model here: you get your own writable copy without needing push
+access to the instructor's repo, and everyone's work stays isolated.)
+
+**Step 1 — fork (once, in your browser).** Sign in to GitHub, go to
+<https://github.com/arl94/gbm-space-c10>, and click **Fork** (top-right) → *Create fork*. You now
+own `https://github.com/<your-github-username>/gbm-space-c10`.
+
+**Step 2 — clone YOUR fork onto the cluster** (login node):
 ```bash
-git clone git@github.com:arl94/gbm-space-c10.git ~/gbm-space-c10
+git clone git@github.com:<your-github-username>/gbm-space-c10.git ~/gbm-space-c10
 cd ~/gbm-space-c10
 ```
-- **Access:** the repo may be private — your instructor adds you as a collaborator. To clone a
-  private repo you must authenticate to GitHub, either with an **SSH key** (generate one on the
-  cluster with `ssh-keygen -t ed25519`, then add `~/.ssh/id_ed25519.pub` to GitHub → Settings →
-  SSH keys, and use the `git@github.com:…` URL) or a **personal access token** over HTTPS
-  (`https://github.com/arl94/gbm-space-c10.git`).
-- **Updates:** get the latest materials anytime with `git -C ~/gbm-space-c10 pull`.
-- **Keep your work separate:** do your analysis in *copies* (e.g. `cp
-  notebooks/level1/01_snrna_analysis_student.ipynb notebooks/level1/01_myname.ipynb`) so a
-  `git pull` never conflicts with your edits. The big data files are **not** in the repo — they
-  stay on the shared filesystem (paths are given in the notebooks / `README.md`).
+
+**Step 3 — link the instructor's repo as `upstream`** (this is how you receive updates):
+```bash
+git remote add upstream git@github.com:arl94/gbm-space-c10.git
+git remote -v      # 'origin' = your fork (you push here); 'upstream' = instructor (you pull from here)
+```
+
+**Get instructor updates anytime** — safe to run whenever notebooks change:
+```bash
+git pull upstream master
+```
+To keep those pulls **conflict-free**, do your analysis in a *copy* of the student notebook so you
+never edit the tracked file the instructor might also update:
+```bash
+cp notebooks/level1/01_snrna_analysis_student.ipynb notebooks/level1/01_myname.ipynb
+```
+Save your own progress to **your fork** whenever you like:
+```bash
+git add notebooks/level1/01_myname.ipynb
+git commit -m "my level 1 progress"
+git push origin master
+```
+
+**GitHub authentication on the cluster:** to clone/push over SSH, generate a key on the cluster
+(`ssh-keygen -t ed25519`, press Enter through the prompts) and add the contents of
+`~/.ssh/id_ed25519.pub` to GitHub → *Settings → SSH and GPG keys*. (HTTPS with a personal access
+token also works, using your fork's `https://github.com/<your-github-username>/gbm-space-c10.git` URL.)
+
+The big data **and the precomputed model files are not in the repo** — they stay on the shared
+filesystem (paths are in the notebooks / `README.md` / `precomputed/README.md`).
 
 ---
 
